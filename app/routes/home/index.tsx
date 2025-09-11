@@ -1,3 +1,4 @@
+import Hero from '~/components/Hero'
 import type { Route } from "./+types/index"
 
 export function meta({ }: Route.MetaArgs) {
@@ -12,8 +13,10 @@ export default function Home() {
   console.log('Hello from Home')
 
   return (
-    <section>
-      <h1>My Apps</h1>
-    </section>
+    <>
+      <section>
+        <Hero name='Sekti Wicaksono' text='I am a full-stack JavaScript developer with a specialisation in UI design.' />
+      </section>
+    </>
   )
 }
