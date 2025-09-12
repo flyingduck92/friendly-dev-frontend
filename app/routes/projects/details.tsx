@@ -42,7 +42,7 @@ const ProjectDetails = ({ loaderData }: Route.ComponentProps) => {
               {project.description}
             </p>
 
-            <a href={project.url} target="_blank" className='inline-block text-white bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded transition hover:scale-110'>
+            <a href={project.url} target="_blank" className='inline-block text-white bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded transition hover:scale-[1.05]'>
               View Live Site ➜
             </a>
           </div>
