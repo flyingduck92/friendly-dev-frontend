@@ -22,7 +22,6 @@ const ProjectDetails = ({ loaderData }: Route.ComponentProps) => {
   return (
     <>
       <div>
-        <h2>Project Details</h2>
         <Link to='/projects' className='flex items-center text-blue-400 hover:text-blue-500 mb-6 transition'>
           <FaArrowLeft className='mr-2' /> Back to Projects
         </Link>
