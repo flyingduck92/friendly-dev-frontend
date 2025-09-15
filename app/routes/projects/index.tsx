@@ -3,9 +3,18 @@ import type { Project } from '~/type'
 import type { Route } from './+types/index'
 import ProjectCard from '~/components/ProjectCard'
 import Pagination from '~/components/Pagination'
+import { AnimatePresence, motion } from 'motion/react'
+
+export function meta({ }: Route.MetaArgs) {
+  return [
+    { title: "the Friendly Dev | Projects" },
+    { name: "description", content: "My website portfolio!" },
+  ]
+}
+
 
 export async function loader({ request }: Route.LoaderArgs): Promise<{ projects: Project[] }> {
-  const res = await fetch('http://localhost:3000/projects')
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/projects`)
   const data = await res.json()
 
   return { projects: data }
@@ -56,13 +65,31 @@ const Projects = ({ loaderData }: Route.ComponentProps) => {
         }
       </div>
 
-      <div className="grid gap-6 sm:grid-cols-2">
-        {
-          currentProjects.map(project => (
-            <ProjectCard key={project.id} project={project} />
-          ))
-        }
-      </div>
+      <AnimatePresence>
+        <motion.div
+          layout
+          className="grid gap-6 sm:grid-cols-2"
+        >
+          {
+            currentProjects.map((project, i) => (
+              <motion.div
+                key={project.id}
+                layout
+                initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -10, scale: 0.9 }} // instant exit
+                transition={{
+                  duration: 0.3,
+                  delay: i * 0.09, // stagger animation on entrance
+                  layout: { type: "spring", stiffness: 300, damping: 30 }
+                }}
+              >
+                <ProjectCard project={project} />
+              </motion.div>
+            ))
+          }
+        </motion.div>
+      </AnimatePresence >
 
       <Pagination
         totalPages={totalPages}
