@@ -19,20 +19,14 @@ export async function action({ request }: Route.ActionArgs) {
   if (!subject) errors.subject = 'Subject is required'
   if (!message) errors.message = 'Message is required'
 
-  // if errors > 0 return to user
+  // if (errors.length > 0) return to user
   if (Object.keys(errors).length > 0) {
     return { errors }
   }
 
-  const data = {
-    name,
-    email,
-    subject,
-    message
-  }
-
+  // if no errors send data to backend/db
+  const data = { name, email, subject, message }
   return { message: 'Form Submitted successfully', data }
-
 }
 
 const Contact = ({ actionData }: Route.ComponentProps) => {
