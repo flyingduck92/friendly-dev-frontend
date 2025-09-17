@@ -10,7 +10,7 @@ const PostCard = ({ post }: { post: PostMeta }) => {
         {post.title}
       </h3>
       <p className="text-sm text-gray-400 mb-2">
-        {new Date(post.date).toLocaleDateString('default', { year: 'numeric', month: 'short', day: 'numeric' })}
+        {new Date(post.date).toDateString()}
       </p>
       <p className="text-gray-300 mb-4">{post.excerpt}</p>
       <Link to={`/blog/${post.slug}`}

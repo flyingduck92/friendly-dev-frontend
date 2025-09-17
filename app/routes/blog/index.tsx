@@ -9,6 +9,10 @@ export async function loader({ request }: Route.LoaderArgs): Promise<{ posts: Po
   if (!res.ok) throw new Error('Failed to fetch')
 
   const data = await res.json()
+
+  // sort by date descending
+  data.sort((a: PostMeta, b: PostMeta) => new Date(b.date).getTime() - new Date(a.date).getTime())
+
   return { posts: data }
 }
 
