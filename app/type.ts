@@ -16,6 +16,7 @@ export type PostMeta = {
   title: string
   excerpt: string
   date: string
+  image: string
 }
 
 export type StrapiResponse<T> = {
@@ -42,3 +43,21 @@ export type StrapiProject = {
   featured: boolean
 }
 
+export type StrapiPost = {
+  id: string
+  documentId: string
+  title: string
+  slug: string
+  excerpt: string
+  body: string
+  date: string
+  image?: {
+    url: string
+    formats?: {
+      thumbnail?: { url: string }
+      small?: { url: string }
+      medium?: { url: string }
+      large?: { url: string }
+    }
+  }
+}
