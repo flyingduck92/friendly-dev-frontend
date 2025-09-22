@@ -1,6 +1,6 @@
-import type { Project, StrapiProject, StrapiResponse } from '~/type'
+import type { Project, StrapiPost, StrapiProject, StrapiResponse } from '~/type'
 import type { Route } from "./+types/index"
-import type { PostMeta } from '~/type'
+import type { Post } from '~/type'
 import FeaturedProjects from '~/components/FeaturedProjects'
 import AboutPreview from '~/components/AboutPreview'
 import LatestPost from '~/components/LatestPost'
@@ -12,12 +12,12 @@ export function meta({ }: Route.MetaArgs) {
   ]
 }
 
-export async function loader({ request }: Route.LoaderArgs): Promise<{ projects: Project[]; posts: PostMeta[] }> {
+export async function loader({ request }: Route.LoaderArgs): Promise<{ projects: Project[]; posts: Post[] }> {
   const url = new URL(request.url)
 
   const [projectRes, postRes] = await Promise.all([
     fetch(`${import.meta.env.VITE_API_URL}/projects?filters[featured][$eq]=true&populate=*`),
-    fetch(new URL('/posts-meta.json', url))
+    fetch(`${import.meta.env.VITE_API_URL}/posts?sort[0]=date:desc&populate=*`)
   ])
 
   if (!projectRes.ok || !postRes.ok) {
@@ -25,7 +25,7 @@ export async function loader({ request }: Route.LoaderArgs): Promise<{ projects:
   }
 
   const projectJson: StrapiResponse<StrapiProject> = await projectRes.json()
-  const postJson = await postRes.json()
+  const postJson: StrapiResponse<StrapiPost> = await postRes.json()
 
   const projects = projectJson.data.map(item => ({
     id: item.id,
@@ -33,7 +33,7 @@ export async function loader({ request }: Route.LoaderArgs): Promise<{ projects:
     title: item.title,
     description: item.description,
     image: item.image?.url
-      ? `${import.meta.env.VITE_STRAPI_URL}${item.image.url}`
+      ? `${item.image.url}`
       : '/images/no-image.png',
     url: item.url,
     date: item.date,
@@ -41,7 +41,19 @@ export async function loader({ request }: Route.LoaderArgs): Promise<{ projects:
     featured: item.featured,
   }))
 
-  return { projects, posts: postJson }
+  const posts = postJson.data.map(item => ({
+    id: item.id,
+    title: item.title,
+    slug: item.slug,
+    date: item.date,
+    excerpt: item.excerpt,
+    body: item.body,
+    image: item.image?.url
+      ? `${item.image.url}`
+      : '/images/no-image.png',
+  }))
+
+  return { projects, posts }
 }
 
 const Home = ({ loaderData }: Route.ComponentProps) => {

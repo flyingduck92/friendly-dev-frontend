@@ -18,7 +18,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     title: item.title,
     description: item.description,
     image: item.image?.url
-      ? `${import.meta.env.VITE_STRAPI_URL}${item.image.url}`
+      ? `${item.image.url}`
       : '/images/no-image.png',
     url: item.url,
     date: item.date,

@@ -1,4 +1,4 @@
-import type { PostMeta, StrapiResponse, StrapiPost } from '~/type'
+import type { Post, StrapiResponse, StrapiPost } from '~/type'
 import type { Route } from './+types'
 import PostCard from '~/components/PostCard'
 
@@ -6,7 +6,7 @@ import { useState } from 'react'
 import Pagination from '~/components/Pagination'
 import PostFilter from '~/components/PostFilter'
 
-export async function loader({ request }: Route.LoaderArgs): Promise<{ posts: PostMeta[] }> {
+export async function loader({ request }: Route.LoaderArgs): Promise<{ posts: Post[] }> {
 
   const res = await fetch(`${import.meta.env.VITE_API_URL}/posts?populate=image&sort=date:desc`)
 
@@ -22,7 +22,7 @@ export async function loader({ request }: Route.LoaderArgs): Promise<{ posts: Po
     date: item.date,
     body: item.body,
     image: item.image?.url
-      ? `${import.meta.env.VITE_STRAPI_URL}${item.image.url}`
+      ? `${item.image.url}`
       : '/images/no-image.png',
   }))
 
